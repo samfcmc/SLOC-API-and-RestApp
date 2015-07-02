@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Restaurant Application</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script type="text/javascript" src="jquery/jquery-1.11.1.min.js"></script>
+        <script src="dist/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="js/menuInfo.js"></script>
+        <script type="text/javascript" src="js/menuOptionSel.js"></script>
+        <script type="text/javascript" src="js/orderList.js"></script>
+        <script type="text/javascript" src="js/md5.js"></script>
+        <link type="text/css" rel="stylesheet" href="dist/css/bootstrap.min.css"/>
+
+        <style>
+            td {
+                width: 25%;
+                vertical-align: middle;
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <div class="container-fluid scroll_fixed" style="text-align: center">
+
+            <div class="jumbotron" style="background: #FF6666">
+                <h3 id="title" align="center" style="color: whitesmoke">WELCOME TO THE IST RESTAURANT</h3>
+                <h5 id="title2" style="color: #404040">Table: <span id="tableNr"></span><span> Seat: </span><span id="seatNr"></span></h5>
+                <h5 id="map" style="color: #404040"></h5>
+                <h5 id="points" style="color: whitesmoke"></h5>
+            </div>
+            <br>
+        </div>
+
+        <div class="container-fluid">
+
+            <div id="login" class="collapse in" style="text-align: center">
+                <button id="signI" type="button" class="btn btn-default btn-lg" style="width: 300px">Sign In</button>
+                <br>
+                <br>
+                <button id="createA" type="button" class="btn btn-default btn-lg" style="width: 300px">Create Account</button>
+            </div> 
+
+            <div id="createAccount" class="collapse">
+                <h3 align="center">Create new account</h3>
+                <br>
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label for="inputID1" class="col-sm-2 control-label">User ID:</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="id" class="form-control" id="inputID1" placeholder="user id">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputPassword1" class="col-sm-2 control-label">Password:</label>
+                        <div class="col-sm-10">
+                            <input type="password" name="password" class="form-control" id="inputPassword1" placeholder="Password">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPassword2" class="col-sm-2 control-label">Confirm Password:</label>
+                        <div class="col-sm-10">
+                            <input type="password" name="confirm_password" class="form-control" id="inputPassword2" placeholder="Confirm Password">
+                            <h5>All fields are required</h5>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button id="createBtn" type="button" name="create" class="btn btn-default">Create Account</button>
+                            <button id="returnCreate" Type="button" class="btn btn-default">Return</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div id="signIn" class="collapse">
+                <h3 align="center">Login</h3>
+                <br>
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label for="inputID2" class="col-sm-2 control-label">User ID:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="inputID2" placeholder="user id">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPassword3" class="col-sm-2 control-label">Password:</label>
+                        <div class="col-sm-10">
+                            <input type="password" class="form-control" id="inputPassword3" placeholder="Password">
+                            <h5>All fields are required</h5>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button id="signBtn" type="button" class="btn btn-default">Sign in</button>
+                            <button id="returnSign" Type="button" class="btn btn-default">Return</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div id="mainMenu" class="collapse" style="text-align: center">
+                <button id="mainCourseBtn" type="button" class="btn btn-default btn-lg" style="width: 300px">Main Course</button>
+                <br>
+                <br>
+                <button id="dessertsBtn" type="button" class="btn btn-default btn-lg" style="width: 300px">Desserts</button>
+                <br>
+                <br>
+                <button id="drinksBtn" type="button" class="btn btn-default btn-lg" style="width: 300px">Drinks</button>
+                <br>
+                <br>
+                <br>
+                <button id="orderBtn" type="button" class="btn btn-default btn-lg" style="width: 300px">Order Menu</button>
+            </div>
+
+            <div id="mainCourse" class="collapse">
+                <form role="form">
+                    <h4 style="text-align: center">Select the dish you want</h4>
+                    <br>
+                    <div class="form-group" id="dishOptionsDiv" style="text-align: center"></div>
+                    <br>
+                    <div class="form-group" style="text-align: center">
+                        <button id="selectCourse" type="button" class="btn btn-default btn-lg" style="width: 150px" data-loading-text="Loading...">
+                            Select</button>
+                        <button id="returnCourse" type="button" class="btn btn-default btn-lg" style="width: 150px">Return</button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="dessert" class="collapse">
+                <form role="form">
+                    <h4 style="text-align: center">Select the dessert you want</h4>
+                    <br>
+                    <div id="dessertOptionsDiv" style="text-align: center"></div>
+                    <br>
+                    <div class="form-group" style="text-align: center">
+                        <button id="selectDessert" type="button" class="btn btn-default btn-lg" style="width: 150px" data-loading-text="Loading...">
+                            Select</button>
+                        <button id="returnDessert" type="button" class="btn btn-default btn-lg" style="width: 150px">Return</button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="drink" class="collapse">
+                <form role="form">
+                    <h4 style="text-align: center">Select the drink you want</h4>
+                    <br>
+                    <div id="drinkOptionsDiv" style="text-align: center"></div>
+                    <br>
+                    <div class="form-group" style="text-align: center">
+                        <button id="selectDrink" type="button" class="btn btn-default btn-lg" style="width: 150px" data-loading-text="Loading...">
+                            Select</button>
+                        <button id="returnDrink" type="button" class="btn btn-default btn-lg" style="width: 150px">Return</button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="order" class="collapse">
+                <h4 align="center">Main Course</h4>
+                <div class="table-responsive">
+                    <table class="table" style="width: 90%" align="center">
+                        <tbody id="mainCourseTable"></tbody>
+                    </table>
+                </div>
+                <h4 align="center">Dessert</h4>
+                <div class="table-responsive">
+                    <table class="table" style="width: 90%" align="center">
+                        <tbody id="dessertTable"></tbody>
+                    </table>
+                </div>
+                <h4 align="center">Drink</h4>
+                <div class="table-responsive">
+                    <table class="table" style="width: 90%" align="center">
+                        <tbody id="drinkTable"></tbody>
+                    </table>
+                </div>
+                <h4 style="text-align: center">Total: <span id="total"></span><span>€</span></h4>
+                <br>
+                <div align="center">
+                    <button id="sendOrder" type="button" class="btn btn-default" data-loading-text="Loading...">
+                        Send Order</button>
+                    <button id="returnOrder" type="button" class="btn btn-default">Return</button>
+                </div>
+            </div>
+
+        </div>
+
+        <script type="text/javascript">
+
+            //------------------------------- Get table number ----------------------------------------------
+
+            var tableInfo = window.location.search;
+            tableInfo = tableInfo.slice(1);
+            tableInfo = decodeURIComponent(tableInfo);
+            tableInfo = tableInfo.split(":");
+            tableInfo = tableInfo[1].split(" ");
+            var table = tableInfo[1];
+            var seat = tableInfo[3];
+            //console.log("table number: ", tableInfo);
+            document.getElementById("tableNr").innerHTML = table;
+            document.getElementById("seatNr").innerHTML = seat;
+
+            //------------------------------- Get MetaInfo from server --------------------------------------
+            var menuInfo;
+            var points = -1;
+            var userId;
+            var menuOptionSel;
+            var orderList;
+            var mainCourseList = [];
+            var dessertList = [];
+            var drinkList = [];
+            var mainCourseSel = [];
+            var dessertSel = [];
+            var drinkSel = [];
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                    menuData = JSON.parse(xmlhttp.responseText);
+                    //console.log("Attendance.html - metada: ", metaData);
+                    if (menuData === null) {
+                        alert("Error connecting Server!");
+                    } else {
+                        menuInfo = new MenuInfo(menuData);
+                        menuInfo.setMenu();
+                        mainCourseList = menuInfo.getMainCourse();
+                        dessertList = menuInfo.getDesserts();
+                        drinkList = menuInfo.getDrinks();
+                        // Debug
+                        //console.log("restApp.html - mainCourseList: ", mainCourseList);
+                        //console.log("restApp.html - dessertList: ", dessertList);
+                        //console.log("restApp.html - drinkList: ", drinkList);
+
+                        menuOptionSel = new MenuOptionSel();
+                        menuOptionSel.createOption("dishOptionsDiv", mainCourseList);
+                        menuOptionSel.createOption("dessertOptionsDiv", dessertList);
+                        menuOptionSel.createOption("drinkOptionsDiv", drinkList);
+                        orderList = new OrderList();
+                    }
+                }
+            };
+            xmlhttp.open("GET", "http://localhost/sloc_server/slocAPI.php?func=getLocationDataDir&app=restApp&path=menu/maincourses,menu/desserts,menu/drinks", true);
+            //xmlhttp.open("GET", "http://192.168.2.1/slocAPI.php?func=getLocationDataDir&app=restApp&path=menu/maincourses,menu/desserts,menu/drinks", true);
+            xmlhttp.send();
+
+            //---------------------------------------------------------------------------------------------------
+
+            //---- Buttons Action ----
+
+            // Create Account buttons
+            $("#createA").click(function () {
+                document.getElementById("login").setAttribute("class", "collapse center");
+                document.getElementById("createAccount").setAttribute("class", "collapse in");
+            });
+            $("#createBtn").click(function () {
+                var idC = document.getElementById("inputID1").value;
+                var pass1C = document.getElementById("inputPassword1").value;
+                var pass2C = document.getElementById("inputPassword2").value;
+
+                if (idC === "" || pass1C === "" || pass2C === "") {
+                    alert("All fields are required!");
+                }
+                else {
+                    if (pass1C !== pass2C) {
+                        alert("Passwords don't match!");
+                    }
+                    else {
+                        pass1C = md5(pass1C);
+                        //console.log("passHash: ", pass1C);
+                        //
+                        //Create and send a AJAX request to the Server
+                        xmlhttp.onreadystatechange = function () {
+                            if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                                var createLog = xmlhttp.responseText;
+                                console.log("Attendance.html - CreateAccountphpResponse: ", createLog);
+
+                                switch (parseInt(createLog)) {
+                                    case 1:
+                                        alert('Account created!');
+                                        points = 0;
+                                        setPoints(idC, "0");
+                                        document.getElementById("createAccount").setAttribute("class", "collapse center");
+                                        document.getElementById("signIn").setAttribute("class", "collapse in center");
+                                        document.getElementById("inputID1").value = "";
+                                        document.getElementById("inputPassword1").value = "";
+                                        document.getElementById("inputPassword2").value = "";
+                                        break;
+                                    case 0:
+                                        alert('User already exists!');
+                                        document.getElementById("createAccount").setAttribute("class", "collapse center");
+                                        document.getElementById("signIn").setAttribute("class", "collapse in center");
+                                        document.getElementById("inputID1").value = "";
+                                        document.getElementById("inputPassword1").value = "";
+                                        document.getElementById("inputPassword2").value = "";
+                                        break;
+                                    default:
+                                        alert("Communication Error!");
+                                        break;
+                                }
+                            }
+                        };
+                        xmlhttp.open("POST", "http://localhost/sloc_server/slocAPI.php?app=restApp&func=createAccount&path=users&id=" + idC + "&pass=" + pass1C, false);
+                        //xmlhttp.open("POST", "http://192.168.2.1/slocAPI.php?app=restApp&func=createAccount&path=users&id=" + idC + "&pass=" + pass1C, false);
+                        xmlhttp.send();
+                    }
+                }
+            });
+
+            $("#returnCreate").click(function () {
+                document.getElementById("login").setAttribute("class", "collapse in");
+                document.getElementById("createAccount").setAttribute("class", "collapse");
+            });
+
+            // Sign In buttons
+            $("#signI").click(function () {
+                document.getElementById("login").setAttribute("class", "collapse center");
+                document.getElementById("signIn").setAttribute("class", "collapse in");
+            });
+            $("#signBtn").click(function () {
+                var idL = document.getElementById("inputID2").value;
+                var passL = document.getElementById("inputPassword3").value;
+                console.log("idSign: ", idL);
+                console.log("passSign: ", passL);
+                if (idL === "" || passL === "") {
+                    alert("All fields are required!");
+                }
+                else {
+                    passL = md5(passL);
+                    //console.log("passHash: ", passL);
+
+                    //Create and send a AJAX request to the Server
+                    xmlhttp.onreadystatechange = function () {
+                        if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                            var loginStatus = xmlhttp.responseText;
+                            console.log("restApp.html - LoginphpResponse: ", loginStatus);
+                            switch (parseInt(loginStatus)) {
+                                case 1:
+                                    userId = idL;
+                                    getPoints(idL);
+                                    break;
+                                case 2:
+                                    alert("The password is incorrect!");
+                                    document.getElementById("inputPassword3").value = "";
+                                    break;
+                                case 0:
+                                    alert("User with id " + idL + " doesnt exist!");
+                                    document.getElementById("inputID2").value = "";
+                                    document.getElementById("inputPassword3").value = "";
+                                    break;
+                                default:
+                                    alert("Communication Error!");
+                                    break;
+                            }
+                        }
+                    };
+                    xmlhttp.open("GET", "http://localhost/sloc_server/slocAPI.php?app=restApp&func=signUp&path=users&id=" + idL + "&pass=" + passL, true);
+                    //xmlhttp.open("GET", "http://192.168.2.1/slocAPI.php?app=restApp&func=signUp&path=users&id=" + idL + "&pass=" + passL, true);
+                    xmlhttp.send();
+                }
+            });
+            $("#returnSign").click(function () {
+                document.getElementById("login").setAttribute("class", "collapse in");
+                document.getElementById("signIn").setAttribute("class", "collapse");
+            });
+
+            // Menu Buttons
+            $("#mainCourseBtn").click(function () {
+                document.getElementById("mainMenu").setAttribute("class", "collapse center");
+                document.getElementById("map").innerHTML = "Main Course";
+                document.getElementById("mainCourse").setAttribute("class", "collapse in");
+                $("#selectCourse").unbind().bind("click", function () {
+                    //var $btn = $(this).button("loading");
+                    mainCourseSel = menuOptionSel.menuChecked("MC");
+                    console.log(mainCourseSel);
+                    document.getElementById("mainCourse").setAttribute("class", "collapse center");
+                    document.getElementById("map").innerHTML = "";
+                    document.getElementById("mainMenu").setAttribute("class", "collapse in");
+                    //$btn.button("reset");
+                });
+                $("#returnCourse").unbind().bind("click", function () {
+                    document.getElementById("mainCourse").setAttribute("class", "collapse center");
+                    document.getElementById("map").innerHTML = "";
+                    document.getElementById("mainMenu").setAttribute("class", "collapse in");
+                });
+            });
+
+            $("#dessertsBtn").click(function () {
+                document.getElementById("mainMenu").setAttribute("class", "collapse center");
+                document.getElementById("map").innerHTML = "Desserts";
+                document.getElementById("dessert").setAttribute("class", "collapse in");
+                $("#selectDessert").unbind().bind("click", function () {
+                    //var $btn = $(this).button("loading");
+                    dessertSel = menuOptionSel.menuChecked("DE");
+                    document.getElementById("dessert").setAttribute("class", "collapse center");
+                    document.getElementById("map").innerHTML = "";
+                    document.getElementById("mainMenu").setAttribute("class", "collapse in");
+                    //$btn.button("reset");
+                });
+                $("#returnDessert").unbind().bind("click", function () {
+                    document.getElementById("dessert").setAttribute("class", "collapse center");
+                    document.getElementById("map").innerHTML = "";
+                    document.getElementById("mainMenu").setAttribute("class", "collapse in");
+                });
+            });
+
+            $("#drinksBtn").click(function () {
+                document.getElementById("mainMenu").setAttribute("class", "collapse center");
+                document.getElementById("map").innerHTML = "Drinks";
+                document.getElementById("drink").setAttribute("class", "collapse in");
+                $("#selectDrink").unbind().bind("click", function () {
+                    //var $btn = $(this).button("loading");
+                    drinkSel = menuOptionSel.menuChecked("DI");
+                    document.getElementById("drink").setAttribute("class", "collapse center");
+                    document.getElementById("map").innerHTML = "";
+                    document.getElementById("mainMenu").setAttribute("class", "collapse in");
+                    //$btn.button("reset");
+                });
+                $("#returnDrink").unbind().bind("click", function () {
+                    document.getElementById("drink").setAttribute("class", "collapse center");
+                    document.getElementById("map").innerHTML = "";
+                    document.getElementById("mainMenu").setAttribute("class", "collapse in");
+                });
+            });
+
+            $("#orderBtn").click(function () {
+                orderList.setTotalToZero();
+                orderList.setOrderToZero();
+                orderList.setOrderList(mainCourseSel, "mainCourseTable");
+                orderList.setOrderList(dessertSel, "dessertTable");
+                orderList.setOrderList(drinkSel, "drinkTable");
+                document.getElementById("total").innerHTML = orderList.getTotal();
+                document.getElementById("mainMenu").setAttribute("class", "collapse center");
+                document.getElementById("map").innerHTML = "Your Order";
+                document.getElementById("order").setAttribute("class", "collapse in");
+
+                $("#sendOrder").unbind().bind("click", function () {
+                    //var $btn = $(this).button("loading");
+                    orderList.makeOrder(userId, table, seat);
+                    document.getElementById("order").setAttribute("class", "collapse center");
+                    document.getElementById("map").innerHTML = "";
+                    document.getElementById("mainMenu").setAttribute("class", "collapse in");
+                    document.getElementById("mainCourseTable").innerHTML = "";
+                    document.getElementById("dessertTable").innerHTML = "";
+                    document.getElementById("drinkTable").innerHTML = "";
+                    //$btn.button("reset");
+                });
+
+                $("#returnOrder").unbind().bind("click", function () {
+                    document.getElementById("order").setAttribute("class", "collapse center");
+                    document.getElementById("map").innerHTML = "";
+                    document.getElementById("mainMenu").setAttribute("class", "collapse in");
+                    document.getElementById("mainCourseTable").innerHTML = "";
+                    document.getElementById("dessertTable").innerHTML = "";
+                    document.getElementById("drinkTable").innerHTML = "";
+                });
+            });
+
+            var setPoints = function (userId, point) {
+
+                var points = [];
+                points.push(point);
+                points = JSON.stringify(points);
+                console.log("points0: ", points);
+
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                        var response = JSON.parse(xmlhttp.responseText);
+                        if (response !== 1) {
+                            alert("Erro while creating" + user + "points!");
+                        }
+                    }
+                };
+                xmlhttp.open("POST", "http://localhost/sloc_server/slocAPI.php?app=restApp&func=setLocationData&path=points/"
+                        + userId + "&data=" + points, true);
+                //xmlhttp.open("POST", "http://192.168.2.1/slocAPI.php?app=restApp&func=setLocationData&path=points/"
+                //        + userId + "&data=" + points, true);
+                xmlhttp.send();
+            };
+
+            var getPoints = function (userId) {
+                //Create and send a AJAX request to the Server
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                        var pointsResponse = JSON.parse(xmlhttp.responseText);
+                        console.log("restApp.html - getScore ", typeof pointsResponse[0]);
+
+                        if (pointsResponse[0] === "free") {
+                            document.getElementById("points").innerHTML = "User: " + userId + " -- points: FREE MEAL!";
+
+                            //document.getElementById("points").innerHTML = "You have a free meal";
+                        } else if (!isNaN(parseInt(pointsResponse[0]))) {
+                            document.getElementById("points").innerHTML = "User: " + userId + " -- points: " +
+                                    pointsResponse[0] + " / 3 to a free meal!";
+                            //document.getElementById("points").innerHTML = "points: " + pointsResponse[0] +
+                            //        " - with 3 points you get a free meal!";
+                        }
+                    }
+
+                    document.getElementById("signIn").setAttribute("class", "collapse center");
+                    document.getElementById("mainMenu").setAttribute("class", "collapse in center");
+                    document.getElementById("inputID2").value = "";
+                    document.getElementById("inputPassword3").value = "";
+                };
+                //console.log("http://localhost/locDev_server/slocAPI.php?app=restApp&func=getLocationDataFile&path=points/" + userId);
+                xmlhttp.open("GET", "http://localhost/sloc_server/slocAPI.php?app=restApp&func=getLocationDataFile&path=points/" + userId, true);
+                //xmlhttp.open("GET", "http://192.168.2.1/slocAPI.php?app=restApp&func=getLocationDataFile&path=points/" + userId, true);
+                xmlhttp.send();
+
+            };
+
+        </script>
+    </body>
+</html>

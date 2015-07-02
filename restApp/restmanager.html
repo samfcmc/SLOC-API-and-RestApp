@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script type="text/javascript" src="js/menuInfo.js"></script>
+        <script type="text/javascript" src="js/menuManager.js"></script>
+        <script type="text/javascript" src="js/orderManager.js"></script>
+        <script type="text/javascript" src="jquery/jquery-1.11.1.min.js"></script>
+        <script src="dist/js/bootstrap.min.js"></script>
+        <link type="text/css" rel="stylesheet" href="dist/css/bootstrap.min.css"/>
+        <link type="text/css" rel="stylesheet" href="css/reststyle.css"/>
+        <title>Restaurant Manager</title>
+        <style>
+            td {
+                width: 25%;
+                vertical-align: middle;
+            }
+
+            ul{
+                //border:2px solid red;
+                display:inline-block;
+                text-align: left;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container-fluid scroll_fixed" style="text-align: center">
+            <div class="jumbotron" style="background: #FF6666">
+                <h2 style="color: whitesmoke">RESTAURANT MANAGER</h2>
+                <h3 id="map" style="color: #404040"></h3>
+            </div>
+        </div>
+
+        <div class="container-fluid">
+
+            <div id="manager" class="collapse in" style="text-align: center">
+                <br>
+                <br>
+                <button id="orderManagerBtn" type="button" class="btn btn-default btn-lg">Order Management</button>
+                <br>
+                <br>
+                <button id="menuManagerBtn" type="button" class="btn btn-default btn-lg">Menu Management</button>
+            </div>
+
+            <div id="orderManager" class="collapse">
+                <div id="noOrders" class="collapse" style="text-align: center">
+                    <p>No orders to attend! Press Get Orders to update.</p>
+                </div>
+                <div id="tableOrderDiv" class="collapse table-responsive">
+                    <table class="table table-hover" style="width: 75%" align="center">
+                        <tbody id="tableOrder"></tbody>
+                    </table>
+                </div>
+                <br>
+                <div align="center">
+                    <button id="getOrderBtn" type="button" class="btn btn-default" style="width: 200px">Get Orders</button>
+                    <button id="returnOrderBtn" type="button" class="btn btn-default" style="width: 200px">Return</button>
+                </div>
+            </div>
+
+            <div id="showOrder" class="collapse">
+                <div id="listOrderDiv" align="center">
+                    <ul id="showOrderList"></ul>
+                </div>
+                <br>
+                <h5 id="userPoints" style="text-align: center"></h5>
+                <br>
+                <h5 style="text-align: center">Total: <span id="total"></span><span>€</span></h5>
+                <br>
+                <div align="center">
+                    <select id="orderStatus" style="width: 150px"  class="form-control">
+                        <option value="not done">Not Done</option>
+                        <option value="attend">Attend</option>
+                        <option value="done">Done</option>
+                    </select>
+                </div>
+                <br>
+                <br>
+                <div align="center">
+                    <button id="updateOrderBtn" type="button" class="btn btn-default" style="width: 200px">Update Status</button>
+                    <button id="returnShowOrderBtn" type="button" class="btn btn-default" style="width: 200px">Return</button>
+                </div>
+            </div>
+
+            <div id="menuManager" class="collapse">
+                <h4 align="center">Main Course</h4>
+                <div id="showMainCourse" align="center">
+                    <ul id="showMainCourseList"></ul>
+                </div>
+                <br>
+                <h4 align="center">Desserts</h4>
+                <div id="showDesserts" align="center">
+                    <ul id="showDessertList"></ul>
+                </div> 
+                <br>
+                <h4 align="center">Drinks</h4>
+                <div id="showDrinks" align="center">
+                    <ul id="showDrinkList"></ul>
+                </div>
+                <br>
+                <div align="center">
+                    <button id="addElemBtn" type="button" class="btn btn-default" style="width: 200px">Add Element</button>
+                    <span></span>
+                    <button id="removeElemBtn" type="button" class="btn btn-default" style="width: 200px">Remove Element</button>
+                    <span></span>
+                    <button id="returnMenuBtn" type="button" class="btn btn-default" style="width: 200px">Return</button>
+                </div>
+            </div>
+
+            <div id="addMenu" class="collapse" style="alignment-adjust: central">
+                <form class="form-horizontal">
+                    <h4 style="text-align: center">Add a new element to the menu</h4>
+                    <br>
+                    <div class="form-group">
+                        <label for="ElementType" class="col-sm-4 control-label ">Type</label>
+                        <div class ="col-sm-4">
+                            <select id="elementType" style="width: 400px"  class="form-control">
+                                <option value="maincourses">Main Course</option>
+                                <option value="desserts">Dessert</option>
+                                <option value="drinks">Drink</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="elementName" class="col-sm-4 control-label ">Name</label>
+                        <div class ="col-sm-4">
+                            <input type="text" name="elemName" style="width: 400px" class="form-control" id="elementName" placeholder="New Element">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="elementPrice" class="col-sm-4 control-label">Price</label>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input type="text" name="elemPrice" style="width: 367px" class="form-control" id="elementPrice" placeholder="0">
+                                <span class="input-group-addon">€</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" style="text-align: center">
+                        <button id="addElement" type="button" class="btn btn-default" style="width: 100px" data-loading-text="Loading...">
+                            Add</button>
+                        <button id="returnAddMenu" type="button" class="btn btn-default" style="width: 100px">Return</button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="removeMenu" class="collapse">
+
+                <h4 style="text-align: center">Remove a element from the menu</h4>
+                <br>
+                <form class="form-horizontal">
+                    <h4 style="text-align: center">Main Course</h4>
+                    <div class="form-group" id="removeMainCourseDiv"></div>
+                    <h4 style="text-align: center">Dessert</h4>
+                    <div class="form-group" id="removeDessertDiv"></div>
+                    <h4 style="text-align: center">Drink</h4>
+                    <div class="form-group" id="removeDrinkDiv"></div>
+                    <br>
+                    <div class="form-group" style="text-align: center">
+                        <button id="removeElement" type="button" style="width: 100px" class="btn btn-default" data-loading-text="Loading...">
+                            Remove</button>
+                        <button id="returnRemoveMenu" type="button" style="width: 100px" class="btn btn-default">Return</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <script type="text/javascript">
+
+            var title = document.getElementById("menuTitle");
+            var menuManager = new MenuManager();
+            var orderManager = new OrderManager();
+
+            //------------------------------- Get MetaInfo from server --------------------------------------
+
+            console.log("restmanager.html");
+
+            var metaData;
+            var pointsList = [];
+            var orderList = [];
+            var mainCourseList = [];
+            var dessertList = [];
+            var drinkList = [];
+            var btnId = 0;
+            var maxPoints = 3;
+
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                    metaData = JSON.parse(xmlhttp.responseText);
+                    console.log("restManager.html - metada: ", metaData);
+                    if (metaData === null) {
+                        alert("Error connecting Server!");
+                    } else {
+                        menuInfo = new MenuInfo(metaData);
+                        menuInfo.setMenu();
+                        mainCourseList = menuInfo.getMainCourse();
+                        dessertList = menuInfo.getDesserts();
+                        drinkList = menuInfo.getDrinks();
+                        pointsList = menuInfo.getPoints();
+                        // Debug
+                        console.log("restManager.html - mainCourseList: ", mainCourseList);
+                        console.log("restManager.html - dessertList: ", dessertList);
+                        console.log("restManager.html - drinkList: ", drinkList);
+                        console.log("restManager.html - pointsList: ", pointsList);
+
+                        menuManager.getCurrentMenu("showMainCourseList", mainCourseList);
+                        menuManager.getCurrentMenu("showDessertList", dessertList);
+                        menuManager.getCurrentMenu("showDrinkList", drinkList);
+                    }
+                }
+            };
+            xmlhttp.open("GET", "http://localhost/sloc_server/slocAPI.php?func=getLocationDataDir&app=restApp&path=menu/maincourses,menu/desserts,menu/drinks,points", true);
+            //xmlhttp.open("GET", "http://192.168.2.1/slocAPI.php?func=getLocationDataDir&app=restApp&path=menu/maincourses,menu/desserts,menu/drinks,points", true);
+            xmlhttp.send();
+
+            //---------------------------------------------------------------------------------------------------
+
+            //---- Buttons Action ----
+
+            // Order Buttons
+            $("#orderManagerBtn").click(function () {
+                if (orderList.length === 0) {
+                    document.getElementById("noOrders").setAttribute("class", "collapse in");
+                }
+                document.getElementById("manager").setAttribute("class", "collapse center");
+                document.getElementById("map").innerHTML = "Order Manager";
+                document.getElementById("orderManager").setAttribute("class", "collapse in");
+
+                $("#getOrderBtn").click(function () {
+                    console.log("Entered getOrderBtn method!");
+                    if (orderList.length > 0) {
+                        orderManager.removeDoneOrder();
+                    }
+
+                    var xmlhttp = new XMLHttpRequest();
+                    xmlhttp.onreadystatechange = function () {
+                        if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                            var orders = JSON.parse(xmlhttp.responseText);
+                            if (orders !== 2 && typeof orders === 'object') {
+                                console.log(typeof orders);
+                                console.log(orders);
+                                orderManager.setOrderList(orders[0]);
+                            }
+                            orderManager.showOrderList();
+                            orderList = orderManager.getOrderList();
+                            console.log("restManager.html - orderList: ", orderList);
+                            console.log("restManager.html - orderList length: ", orderList.length);
+
+                            if (orderList.length === 0) {
+                                document.getElementById("tableOrderDiv").setAttribute("class", "collapse");
+                                document.getElementById("noOrders").setAttribute("class", "collapse in");
+                            }
+                            else {
+                                document.getElementById("noOrders").setAttribute("class", "collapse");
+                                document.getElementById("tableOrderDiv").setAttribute("class", "collapse in");
+                            }
+
+                        }
+                    };
+                    xmlhttp.open("GET", "http://localhost/sloc_server/slocAPI.php?func=pushLocationData&app=restApp&path=orders/data.dat", true);
+                    //xmlhttp.open("GET", "http://192.168.2.1/slocAPI.php?func=pushLocationData&app=restApp&path=orders/data.dat", true);
+                    xmlhttp.send();
+
+                });
+
+                $("#updateOrderBtn").click(function () {
+
+                    var selecElem = document.getElementById("orderStatus");
+                    var status = selecElem.options[selecElem.selectedIndex].value;
+
+                    if (status === "done") {
+                        document.getElementById(btnId).className = "btn btn-success";
+                        document.getElementById(btnId).name = "done";
+                        var id = btnId.slice(1);
+                        orderList[id].status = "done";
+                        updatePoints(orderList[id].user);
+                        orderManager.setOrderStatus(id, "done");
+                    }
+                    else if (status === "attend") {
+                        document.getElementById(btnId).className = "btn btn-warning";
+                        document.getElementById(btnId).name = "attend";
+                        var id = btnId.slice(1);
+                        orderList[id].status = "attend";
+                        orderManager.setOrderStatus(id, "attend");
+                    }
+                    else if (status === "not done") {
+                        document.getElementById(btnId).className = "btn btn-default";
+                        document.getElementById(btnId).name = "not done";
+                        var id = btnId.slice(1);
+                        orderList[id].status = " not done";
+                        orderManager.setOrderStatus(id, "not done");
+                    }
+
+                    document.getElementById("showOrder").setAttribute("class", "collapse center");
+                    document.getElementById("map").innerHTML = "Order Manager";
+                    document.getElementById("showOrderList").innerHTML = "";
+                    document.getElementById("orderManager").setAttribute("class", "collapse in");
+                });
+
+
+                $("#returnShowOrderBtn").click(function () {
+                    document.getElementById("showOrder").setAttribute("class", "collapse center");
+                    document.getElementById("map").innerHTML = "Order Manager";
+                    document.getElementById("showOrderList").innerHTML = "";
+                    document.getElementById("orderManager").setAttribute("class", "collapse in");
+                });
+            });
+
+            $("#returnOrderBtn").click(function () {
+                document.getElementById("orderManager").setAttribute("class", "collapse center");
+                document.getElementById("map").innerHTML = "";
+                document.getElementById("manager").setAttribute("class", "collapse in");
+
+            });
+
+            // Menu Buttons
+            $("#menuManagerBtn").click(function () {
+                document.getElementById("manager").setAttribute("class", "collapse center");
+                document.getElementById("map").innerHTML = "Menu Manager";
+                document.getElementById("menuManager").setAttribute("class", "collapse in");
+            });
+
+            $("#addElemBtn").click(function () {
+
+                document.getElementById("menuManager").setAttribute("class", "collapse center");
+                document.getElementById("addMenu").setAttribute("class", "collapse in");
+
+                $("#addElement").unbind().bind("click", function () {
+                    //var $btnAdd = $(this).button("loading");
+                    var newElement = menuManager.getNewElement();
+
+                    if (newElement[0] === "maincourses") {
+                        addNewElement(mainCourseList, "showMainCourseList", newElement, "MC");
+                    }
+                    else if (newElement[0] === "desserts") {
+                        addNewElement(dessertList, "showDessertList", newElement, "DE");
+                    }
+                    else if (newElement[0] === "drinks") {
+                        addNewElement(drinkList, "showDrinkList", newElement, "DI");
+                    }
+
+                    menuManager.addElementToServer(newElement);
+
+                    //$btnAdd.button("reset");
+                    document.getElementById("elementName").value = "";
+                    document.getElementById('elementPrice').value = "";
+                    document.getElementById("addMenu").setAttribute("class", "collapse center");
+                    document.getElementById("menuManager").setAttribute("class", "collapse in");
+                });
+
+                $("#returnAddMenu").click(function () {
+                    document.getElementById("elementName").value = "";
+                    document.getElementById('elementPrice').value = "";
+                    document.getElementById("addMenu").setAttribute("class", "collapse center");
+                    document.getElementById("menuManager").setAttribute("class", "collapse in");
+                });
+
+            });
+
+            $("#removeElemBtn").click(function () {
+                menuManager.setRemoveMenu("removeMainCourseDiv", mainCourseList);
+                menuManager.setRemoveMenu("removeDessertDiv", dessertList);
+                menuManager.setRemoveMenu("removeDrinkDiv", drinkList);
+                document.getElementById("menuManager").setAttribute("class", "collapse center");
+                document.getElementById("removeMenu").setAttribute("class", "collapse in");
+
+                $("#removeElement").unbind().bind("click", function () {
+                    //var $btnRemove = $(this).button("loading");
+                    var mainCourseElem = menuManager.elementChecked("MC");
+                    var dessertElem = menuManager.elementChecked("DE");
+                    var drinkElem = menuManager.elementChecked("DI");
+
+                    removeCheckedElement(mainCourseElem, mainCourseList, "maincourses", "showMainCourseList");
+                    removeCheckedElement(dessertElem, dessertList, "desserts", "showDessertList");
+                    removeCheckedElement(drinkElem, drinkList, "drinks", "showDrinkList");
+
+                    document.getElementById("removeMenu").setAttribute("class", "collapse center");
+                    document.getElementById("menuManager").setAttribute("class", "collapse in");
+                    document.getElementById("removeMainCourseDiv").innerHTML = "";
+                    document.getElementById("removeDessertDiv").innerHTML = "";
+                    document.getElementById("removeDrinkDiv").innerHTML = "";
+                    //$btnRemove.button("reset");
+                });
+
+                $("#returnRemoveMenu").click(function () {
+                    document.getElementById("removeMenu").setAttribute("class", "collapse center");
+                    document.getElementById("menuManager").setAttribute("class", "collapse in");
+                    document.getElementById("removeMainCourseDiv").innerHTML = "";
+                    document.getElementById("removeDessertDiv").innerHTML = "";
+                    document.getElementById("removeDrinkDiv").innerHTML = "";
+                });
+
+            });
+
+            $("#returnMenuBtn").click(function () {
+                document.getElementById("menuManager").setAttribute("class", "collapse center");
+                document.getElementById("map").innerHTML = "";
+                document.getElementById("manager").setAttribute("class", "collapse in");
+
+            });
+
+            var orderView = function () {
+                btnId = this.id;
+                var id = btnId.slice(1);
+                var orderL = orderList[id].order.split("_");
+                var user = orderList[id].user;
+                var table = orderList[id].table;
+                var seat = orderList[id].seat;
+                var points = pointsList[user];
+                var showOrderList = document.getElementById("showOrderList");
+
+                for (var i in orderL) {
+                    var orderElem = orderL[i].split(":");
+                    var listElem = document.createElement("li");
+                    //listElem.id = "li" + menuList[i].id;
+                    //listElem.className = "list-unstyled";
+                    listElem.textContent = orderElem[0] + " ------ price: " + orderElem[1] + "€";
+                    showOrderList.appendChild(listElem);
+                }
+
+                if (points < maxPoints) {
+                    document.getElementById("userPoints").innerHTML = "User points: " + points + " of " + maxPoints + " to a free meal!";
+                } else
+                    document.getElementById("userPoints").innerHTML = "User got a free meal!";
+
+                document.getElementById("total").innerHTML = orderList[id].total;
+                document.getElementById("orderManager").setAttribute("class", "collapse center");
+                document.getElementById("map").innerHTML = "User - " + user + " Table - " + table + " Seat - " + seat;
+                document.getElementById("showOrder").setAttribute("class", "collapse in");
+            };
+
+            var updatePoints = function (user) {
+                console.log("restManager - user: ", user);
+                if (pointsList[user] !== undefined) {
+                    var points = pointsList[user][0];
+                    if (points === "free" || isNaN(parseInt(points))) {
+                        points = 0;
+                    } else {
+                        points = parseInt(points) + 1;
+                        if (points === maxPoints)
+                            points = "free";
+                    }
+                } else {
+                    pointsList[user] = [];
+                    points = 0;
+                }
+
+                console.log("restManager - updatePoints: ", points);
+                var pList = [];
+                pList.push(points);
+                pList = JSON.stringify(pList);
+
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                        var response = JSON.parse(xmlhttp.responseText);
+                        if (response !== 1) {
+                            alert("Erro while update" + user + "points!");
+                        }
+                        else {
+                            pointsList[user][0] = points;
+                        }
+                    }
+                };
+                xmlhttp.open("POST", "http://localhost/sloc_server/slocAPI.php?app=restApp&func=setLocationData&path=points/"
+                        + user + "&data=" + pList, true);
+                //xmlhttp.open("POST", "http://192.168.2.1/slocAPI.php?app=restApp&func=setLocationData&path=points/"
+                //        + user + "&data=" + pList, true);
+                xmlhttp.send();
+            };
+
+            var addNewElement = function (menuList, showListId, newElement, elemId) {
+                var newElem = new Object();
+                newElem.name = newElement[1];
+                newElem.price = newElement[2];
+                var nr = menuList.length;
+                newElem.id = elemId + nr;
+                newElem.type = newElement[0];
+
+                if (menuList.length === 0) {
+                    var elemLi = document.getElementById("info");
+                    elemLi.parentNode.removeChild(elemLi);
+                }
+
+                menuList.push(newElem);
+
+                var showMenuList = document.getElementById(showListId);
+                var listElem = document.createElement("li");
+                //listElem.className = "list-unstyled";
+                listElem.id = "li" + newElem.id;
+                listElem.textContent = newElem.name + " ----- " + newElem.price + "€";
+                showMenuList.appendChild(listElem);
+            };
+
+            var removeFromList = function (elemId, mList) {
+                for (var j in mList) {
+                    if (mList[j].id === elemId) {
+                        mList.splice(j, 1);
+                    }
+                }
+                if (mList.length === 0) {
+                    return true;
+                } else
+                    return false;
+            };
+
+            var removeCheckedElement = function (elemChecked, menuList, type, showListId) {
+                if (elemChecked.length === 0) {
+                    return;
+                } else {
+                    for (var i in elemChecked) {
+                        var elemLi = document.getElementById("li" + elemChecked[i]);
+                        elemLi.parentNode.removeChild(elemLi);
+                        if (removeFromList(elemChecked[i], menuList)) {
+                            var showMenuList = document.getElementById(showListId);
+                            var info = document.createElement("li");
+                            info.id = "info";
+                            info.className = "list-unstyled";
+                            info.textContent = "No Elements in this Menu!";
+                            showMenuList.appendChild(info);
+                        }
+                        var elemForm = document.getElementById("form" + elemChecked[i]);
+                        elemForm.parentNode.removeChild(elemForm);
+                    }
+                    menuManager.removeFromServer(type, menuList);
+                }
+            };
+
+        </script>
+    </body>
+</html>
