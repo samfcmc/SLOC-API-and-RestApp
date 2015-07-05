@@ -364,7 +364,8 @@
                             }
                         }
                     };
-                    xmlhttp.open("GET", "http://localhost/sloc_server/slocAPI.php?app=restApp&func=signUp&path=users&id=" + idL + "&pass=" + passL, true);
+                    var url = get_endpoint_url("app=restApp&func=signUp&path=users&id=" + idL + "&pass=" + passL)
+                    xmlhttp.open("GET", url, true);
                     //xmlhttp.open("GET", "http://192.168.2.1/slocAPI.php?app=restApp&func=signUp&path=users&id=" + idL + "&pass=" + passL, true);
                     xmlhttp.send();
                 }
@@ -482,8 +483,9 @@
                         }
                     }
                 };
-                xmlhttp.open("POST", "http://localhost/sloc_server/slocAPI.php?app=restApp&func=setLocationData&path=points/"
-                        + userId + "&data=" + points, true);
+                var url = get_endpoint_url("app=restApp&func=setLocationData&path=points/"
+                        + userId + "&data=" + points);
+                xmlhttp.open("POST", url, true);
                 //xmlhttp.open("POST", "http://192.168.2.1/slocAPI.php?app=restApp&func=setLocationData&path=points/"
                 //        + userId + "&data=" + points, true);
                 xmlhttp.send();
@@ -514,7 +516,8 @@
                     document.getElementById("inputPassword3").value = "";
                 };
                 //console.log("http://localhost/locDev_server/slocAPI.php?app=restApp&func=getLocationDataFile&path=points/" + userId);
-                xmlhttp.open("GET", "http://localhost/sloc_server/slocAPI.php?app=restApp&func=getLocationDataFile&path=points/" + userId, true);
+                var url = get_endpoint_url("app=restApp&func=getLocationDataFile&path=points/" + userId)
+                xmlhttp.open("GET", url, true);
                 //xmlhttp.open("GET", "http://192.168.2.1/slocAPI.php?app=restApp&func=getLocationDataFile&path=points/" + userId, true);
                 xmlhttp.send();
 
