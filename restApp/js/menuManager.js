@@ -80,7 +80,7 @@ function MenuManager() {
                 }
             }
         };
-        var url = "app=restApp&func=updateLocationData&path=menu/" + newElem[0] + "/data.dat&data=" + newElem[1] + ":" + newElem[2];
+        var url = get_endpoint_url("app=restApp&func=updateLocationData&path=menu/" + newElem[0] + "/data.dat&data=" + newElem[1] + ":" + newElem[2]);
         xmlhttp.open("POST", url, true);
         //xmlhttp.open("POST", "http://192.168.2.1/slocAPI.php?app=restApp&func=updateLocationData&path=menu/" + newElem[0] + "/data.dat&data=" + newElem[1] + ":" + newElem[2], true);
         xmlhttp.send();

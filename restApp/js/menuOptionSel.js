@@ -12,7 +12,7 @@ function MenuOptionSel() {
 
             //---- create image ----
             var newImg = document.createElement("img");
-            newImg.src = "/menu/" + data[i].type + "/images/"
+            newImg.src = "../restApp/menu/" + data[i].type + "/images/"
                     + data[i].name + ".jpeg";
             newImg.alt = data[i].type + "image";
             newImg.width = "300";
