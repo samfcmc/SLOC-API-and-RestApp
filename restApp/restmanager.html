@@ -92,7 +92,7 @@
                 <h4 align="center">Desserts</h4>
                 <div id="showDesserts" align="center">
                     <ul id="showDessertList"></ul>
-                </div> 
+                </div>
                 <br>
                 <h4 align="center">Drinks</h4>
                 <div id="showDrinks" align="center">
@@ -185,6 +185,12 @@
             var btnId = 0;
             var maxPoints = 3;
 
+            var apiUrl = "../sloAPI.php?";
+
+            function get_endpoint_url(endpoint) {
+              return apiUrl + endpoint;
+            }
+
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
@@ -211,7 +217,8 @@
                     }
                 }
             };
-            xmlhttp.open("GET", "http://localhost/sloc_server/slocAPI.php?func=getLocationDataDir&app=restApp&path=menu/maincourses,menu/desserts,menu/drinks,points", true);
+            var url = get_endpoint_url("func=getLocationDataDir&app=restApp&path=menu/maincourses,menu/desserts,menu/drinks,points");
+            xmlhttp.open("GET", url, true);
             //xmlhttp.open("GET", "http://192.168.2.1/slocAPI.php?func=getLocationDataDir&app=restApp&path=menu/maincourses,menu/desserts,menu/drinks,points", true);
             xmlhttp.send();
 
@@ -259,7 +266,8 @@
 
                         }
                     };
-                    xmlhttp.open("GET", "http://localhost/sloc_server/slocAPI.php?func=pushLocationData&app=restApp&path=orders/data.dat", true);
+                    var url = get_endpoint_url("func=pushLocationData&app=restApp&path=orders/data.dat");
+                    xmlhttp.open("GET", url, true);
                     //xmlhttp.open("GET", "http://192.168.2.1/slocAPI.php?func=pushLocationData&app=restApp&path=orders/data.dat", true);
                     xmlhttp.send();
 
@@ -464,8 +472,9 @@
                         }
                     }
                 };
-                xmlhttp.open("POST", "http://localhost/sloc_server/slocAPI.php?app=restApp&func=setLocationData&path=points/"
-                        + user + "&data=" + pList, true);
+                var url = get_endpoint_url("app=restApp&func=setLocationData&path=points/"
+                        + user + "&data=" + pList);
+                xmlhttp.open("POST", url, true);
                 //xmlhttp.open("POST", "http://192.168.2.1/slocAPI.php?app=restApp&func=setLocationData&path=points/"
                 //        + user + "&data=" + pList, true);
                 xmlhttp.send();
