@@ -1,5 +1,11 @@
 function MenuManager() {
 
+    var apiURl = "../slocAPI.php?";
+
+    var get_endpoint_url = function(endpoint) {
+      return apiURl + endpoint;
+    }
+
     this.getCurrentMenu = function (listId, menuList) {
         var showMenuList = document.getElementById(listId);
 
@@ -74,7 +80,8 @@ function MenuManager() {
                 }
             }
         };
-        xmlhttp.open("POST", "http://localhost/sloc_server/slocAPI.php?app=restApp&func=updateLocationData&path=menu/" + newElem[0] + "/data.dat&data=" + newElem[1] + ":" + newElem[2], true);
+        var url = "app=restApp&func=updateLocationData&path=menu/" + newElem[0] + "/data.dat&data=" + newElem[1] + ":" + newElem[2];
+        xmlhttp.open("POST", url, true);
         //xmlhttp.open("POST", "http://192.168.2.1/slocAPI.php?app=restApp&func=updateLocationData&path=menu/" + newElem[0] + "/data.dat&data=" + newElem[1] + ":" + newElem[2], true);
         xmlhttp.send();
     };
@@ -109,7 +116,8 @@ function MenuManager() {
             }
         };
         //console.log("http://localhost/sloc_server/slocAPI.php?app=restApp&func=" + func + "&path=menu/" + type + "&data=" + data);
-        xmlhttp.open("POST", "http://localhost/sloc_server/slocAPI.php?app=restApp&func=" + func + "&path=menu/" + type + "/data.dat&data=" + data, true);
+        var url = get_endpoint_url("app=restApp&func=" + func + "&path=menu/" + type + "/data.dat&data=" + data);
+        xmlhttp.open("POST", url, true);
         //xmlhttp.open("POST", "http://192.168.2.1/slocAPI.php?app=restApp&func=" + func + "&path=menu/" + type + "/data.dat&data=" + data, true);
         xmlhttp.send();
     };
@@ -135,4 +143,3 @@ function MenuManager() {
 
     };
 }
-

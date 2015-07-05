@@ -2,6 +2,12 @@ function OrderList() {
     this.order = 0;
     this.total = 0;
 
+    var apiUrl = "../slocAPI.php?";
+
+    var get_endpoint_url = function(endpoint) {
+      return apiUrl + endpoint;
+    }
+
     this.chosenMenu = function (menuList, menuSelect) {
         for (var j in menuSelect) {
             if (menuList === menuSelect[j][0]) {
@@ -55,7 +61,7 @@ function OrderList() {
     };
 
     this.makeOrder = function (userId, table, seat) {
-        
+
         if (this.total !== 0) {
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.onreadystatechange = function () {
@@ -71,8 +77,10 @@ function OrderList() {
             };
             //console.log("POST", "http://localhost/locDev_server/slocAPI.php?app=restApp&func=updateLocationData&path=orders/data.dat&data=" +
             //        userId + "," + table + "," + seat + "," + this.total + "," + this.order);
-            xmlhttp.open("POST", "http://localhost/sloc_server/slocAPI.php?app=restApp&func=updateLocationData&path=orders/data.dat&data=" +
-                    userId + "," + table + "," + seat + "," + this.total + "," + this.order, true);
+
+            var url = get_endpoint_url("app=restApp&func=updateLocationData&path=orders/data.dat&data=" +
+                    userId + "," + table + "," + seat + "," + this.total + "," + this.order);
+            xmlhttp.open("POST", url, true);
             //xmlhttp.open("POST", "http://192.168.2.1/slocAPI.php?app=restApp&func=updateLocationData&path=orders/data.dat&data=" +
             //        userId + "," + table + "," + seat + "," + this.total + "," + this.order, true);
             xmlhttp.send();

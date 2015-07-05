@@ -12,7 +12,7 @@ function MenuOptionSel() {
 
             //---- create image ----
             var newImg = document.createElement("img");
-            newImg.src = "http://localhost/sloc_server/restApp/menu/" + data[i].type + "/images/"
+            newImg.src = "/menu/" + data[i].type + "/images/"
                     + data[i].name + ".jpeg";
             newImg.alt = data[i].type + "image";
             newImg.width = "300";
@@ -22,7 +22,7 @@ function MenuOptionSel() {
             var newLabel1 = document.createElement("label");
             var newDescr1 = document.createTextNode(data[i].name + " ----- " + data[i].price
                     + "€ ");
-            
+
             newLabel1.for = data[i].id;
 
             //---- create text input ----

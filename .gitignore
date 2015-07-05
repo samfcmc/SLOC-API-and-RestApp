@@ -1,2 +1,5 @@
 .DS_Store
 .vagrant
+restApp/points/*
+restApp/users/*
+restApp/orders/*
