@@ -41,7 +41,7 @@
                 <br>
                 <br>
                 <button id="createA" type="button" class="btn btn-default btn-lg" style="width: 300px">Create Account</button>
-            </div> 
+            </div>
 
             <div id="createAccount" class="collapse">
                 <h3 align="center">Create new account</h3>
@@ -204,6 +204,12 @@
             document.getElementById("tableNr").innerHTML = table;
             document.getElementById("seatNr").innerHTML = seat;
 
+            var apiUrl = "/slocAPI.php?";
+
+            function get_endpoint_url(endpoint) {
+              return apiUrl + endpoint;
+            }
+
             //------------------------------- Get MetaInfo from server --------------------------------------
             var menuInfo;
             var points = -1;
@@ -242,7 +248,8 @@
                     }
                 }
             };
-            xmlhttp.open("GET", "http://localhost/sloc_server/slocAPI.php?func=getLocationDataDir&app=restApp&path=menu/maincourses,menu/desserts,menu/drinks", true);
+            var url = get_endpoint_url("func=getLocationDataDir&app=restApp&path=menu/maincourses,menu/desserts,menu/drinks");
+            xmlhttp.open("GET", url, true);
             //xmlhttp.open("GET", "http://192.168.2.1/slocAPI.php?func=getLocationDataDir&app=restApp&path=menu/maincourses,menu/desserts,menu/drinks", true);
             xmlhttp.send();
 
@@ -302,7 +309,8 @@
                                 }
                             }
                         };
-                        xmlhttp.open("POST", "http://localhost/sloc_server/slocAPI.php?app=restApp&func=createAccount&path=users&id=" + idC + "&pass=" + pass1C, false);
+                        var url = get_endpoint_url("app=restApp&func=createAccount&path=users&id=" + idC + "&pass=" + pass1C);
+                        xmlhttp.open("POST", url, false);
                         //xmlhttp.open("POST", "http://192.168.2.1/slocAPI.php?app=restApp&func=createAccount&path=users&id=" + idC + "&pass=" + pass1C, false);
                         xmlhttp.send();
                     }
