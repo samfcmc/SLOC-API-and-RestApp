@@ -95,7 +95,7 @@ function signUpAndMetaInfo($param) {
 
     $loginFile = $app . DIRECTORY_SEPARATOR . $path1 . DIRECTORY_SEPARATOR . $userId;
     $metaFile = $app . DIRECTORY_SEPARATOR . $path2 . DIRECTORY_SEPARATOR . "meta-info";
-    
+
     if (file_exists($loginFile)) {
         $buffer = file_get_contents($loginFile);
         if (strcmp($buffer, $userPass) == 0) {
@@ -218,7 +218,7 @@ function getLocationDataDir($param) {
     $path = $param["path"];
 
     $locData = array();
-    $folders = split(",", $path);
+    $folders = explode(",", $path);
 
     foreach ($folders as $value) {
         $dir = $app . DIRECTORY_SEPARATOR . $value;
