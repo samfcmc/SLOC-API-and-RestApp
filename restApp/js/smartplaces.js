@@ -1,5 +1,5 @@
 window.SmartPlaces = {
   hello: function() {
-    console.log("hello, just testing");
+    alert("hello, just testing");
   }
 };
