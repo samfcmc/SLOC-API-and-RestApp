@@ -195,16 +195,33 @@
             //------------------------------- Get table number ----------------------------------------------
 
             var tableInfo = window.location.search;
-            tableInfo = tableInfo.slice(1);
-            tableInfo = decodeURIComponent(tableInfo);
-            //tableInfo = tableInfo.split(":");
-            //tableInfo = tableInfo[1].split(" ");
-            tableInfo = tableInfo.split('&');
-            var table = tableInfo[0];
-            var seat = tableInfo[1];
+            var table = undefined;
+            var seat = undefined;
+
+            function updateTableAndSeat(table, seat) {
+              document.getElementById("tableNr").innerHTML = table;
+              document.getElementById("seatNr").innerHTML = seat;
+            }
+
+            if(tableInfo) {
+              tableInfo = tableInfo.slice(1);
+              tableInfo = decodeURIComponent(tableInfo);
+              tableInfo = tableInfo.split('&');
+              table = tableInfo[0];
+              seat = tableInfo[1];
+              updateTableAndSeat(table, seat);
+            }
+            else {
+              // Get from smart places lib
+              SmartPlaces.onTagFound(function(tag) {
+                table = tag.table;
+                seat = 1;
+                updateTableAndSeat(table, seat);
+              });
+            }
+
             //console.log("table number: ", tableInfo);
-            document.getElementById("tableNr").innerHTML = table;
-            document.getElementById("seatNr").innerHTML = seat;
+
 
             var apiUrl = "../slocAPI.php?";
 
