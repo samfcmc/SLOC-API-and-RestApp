@@ -5,3 +5,4 @@ restApp/users/*
 restApp/orders/*
 bower_components
 node_modules
+deploy.sh
