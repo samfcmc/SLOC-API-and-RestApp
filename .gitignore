@@ -3,3 +3,5 @@
 restApp/points/*
 restApp/users/*
 restApp/orders/*
+bower_components
+node_modules

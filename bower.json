@@ -1,0 +1,24 @@
+{
+  "name": "SLOC-API-and-RestApp",
+  "version": "1.0.0",
+  "homepage": "https://github.com/samfcmc/SLOC-API-and-RestApp",
+  "authors": [
+    "Samuel Coelho <samuelfcmc@gmail.com>"
+  ],
+  "description": "Smart Restaurant web application",
+  "keywords": [
+    "restaurant",
+    "mobile"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "smartplaces-js": "0.0.1"
+  }
+}
