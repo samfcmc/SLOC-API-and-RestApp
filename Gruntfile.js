@@ -25,5 +25,6 @@ module.exports = function(grunt) {
 
   // Default task(s).
   grunt.registerTask('default', ['bower', 'php']);
+  grunt.registerTask('dist', ['bower']);
 
 };
