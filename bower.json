@@ -19,6 +19,6 @@
     "tests"
   ],
   "dependencies": {
-    "smartplaces-js": "0.0.1"
+    "smartplaces-js": "0.0.5"
   }
 }

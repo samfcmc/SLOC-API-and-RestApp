@@ -4,6 +4,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   require('load-grunt-tasks')(grunt);
   grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-clean');
 
   // Project configuration.
   grunt.initConfig({
@@ -42,11 +43,14 @@ module.exports = function(grunt) {
         files: ['bower_components/**/*'],
         tasks: ['copy:bower']
       }
+    },
+    clean: {
+      build: ["bower_components", "restApp/bower_components"],
     }
   });
 
-  // Default task(s).
-  grunt.registerTask('default', ['bower', 'php:dist', 'php:watch', 'watch']);
-  grunt.registerTask('dist', ['bower']);
+  grunt.registerTask('common', ['bower'])
+  grunt.registerTask('default', ['common', 'php:dist', 'php:watch', 'watch']);
+  grunt.registerTask('dist', ['common']);
 
 };
