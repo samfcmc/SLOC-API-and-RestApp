@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script type="text/javascript" src="jquery/jquery-1.11.1.min.js"></script>
+        <script src="dist/js/bootstrap.min.js"></script>
+        <script src="bower_components/angular/angular.js">
+        </script>
+        <script src="bower_components/smartplaces-js/smartplaces.min.js"></script>
+        <link type="text/css" rel="stylesheet" href="dist/css/bootstrap.min.css"/>
+        <link type="text/css" rel="stylesheet" href="css/reststyle.css"/>
+        <title>Restaurant Manager</title>
+        <style>
+            td {
+                width: 25%;
+                vertical-align: middle;
+            }
+
+            ul{
+                //border:2px solid red;
+                display:inline-block;
+                text-align: left;
+            }
+        </style>
+    </head>
+    <body ng-app="app">
+        <div class="container-fluid scroll_fixed" style="text-align: center">
+            <div class="jumbotron" style="background: #FF6666">
+                <h2 style="color: whitesmoke">TABLE MANAGEMENT</h2>
+                <h3 id="map" style="color: #404040"></h3>
+            </div>
+        </div>
+
+        <div class="container-fluid" ng-controller="TableCtrl">
+          <div class="row" ng-if="!ready">
+            Loading...
+          </div>
+
+          <div class="row" ng-show="tags">
+            <div class="panel panel-default" ng-repeat="tag in tags">
+              <div class="panel-heading">
+                <h3 class="panel-title">
+                  Table {{tag.data().table}}
+                  <a href="" ng-click="tableModal(tag)"
+                  data-toggle="modal" data-target="#tableModal">
+                    <span class="glyphicon glyphicon-pencil pull-right"></span>
+                  </a>
+                </h3>
+              </div>
+              <div class="panel-body">
+                <h6>Beacon info</h6>
+                <ul>
+                  <li>UUID: {{tag.beacon().uuid()}}</li>
+                  <li>Major: {{tag.beacon().major()}}</li>
+                  <li>Minor: {{tag.beacon().minor()}}</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal fade" id="tableModal">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close"
+                  data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  <h4 class="modal-title">Edit table</h4>
+                </div>
+                <div class="modal-body">
+                  <div class="input-group">
+                    <input type="number" class="form-control"
+                    placeholder="Table number" aria-describedby="basic-addon1"
+                    ng-model="data.table">
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">
+                    Close
+                  </button>
+                  <button type="button" class="btn btn-primary"
+                  data-dismiss="modal"
+                  ng-click="updateTag(tag, data)">
+                    Save changes
+                  </button>
+                </div>
+              </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+          </div><!-- /.modal -->
+
+        </div>
+
+
+        <script charset="utf-8">
+
+          var app = angular.module('app', []);
+          app.controller('TableCtrl', ['$scope', function($scope) {
+            $scope.ready = false;
+            $scope.tags = [];
+            SmartPlaces.onInit(function() {
+              $scope.init();
+            });
+            $scope.init = function() {
+              SmartPlaces.getTags({
+                success: function(tags) {
+                    $scope.$apply(function() {
+                      $scope.tags = tags;
+                      $scope.ready = true;
+                    });
+                },
+                error: function(error) {
+                  console.log(error);
+                }
+              });
+            };
+            $scope.tableModal = function(tag) {
+              $scope.data = angular.copy(tag.data(), $scope.data);
+              $scope.tag = tag;
+            };
+
+            $scope.updateTag = function(tag, data) {
+              SmartPlaces.updateTag(tag, data, {
+                success: function() {
+                  $scope.tags = [];
+                  $scope.init();
+                }
+              });
+
+            }
+          }]);
+
+        </script>
+
+    </body>
+</html>
