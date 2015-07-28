@@ -43,13 +43,7 @@
               <div class="panel-heading">
                 <h3 class="panel-title">
                   UUID: {{beacon.uuid}}
-                  <a href="" ng-click="newTableModal(beacon)"
-                  data-toggle="modal" data-target="#newTableModal"
-                  class="pull-right">
-                    <span class="glyphicon glyphicon-tag"></span>
-                  </a>
                 </h3>
-
               </div>
               <div class="panel-body">
                 <ul>
@@ -58,6 +52,13 @@
                   <li>Minor: {{beacon.minor}}</li>
                   <li>Distance: {{beacon.distance}}</li>
                 </ul>
+              </div>
+              <div class="panel-footer">
+                <a href="" ng-click="newTableModal(beacon)"
+                data-toggle="modal" data-target="#newTableModal"
+                class="btn btn-default btn-lg">
+                  <span class="glyphicon glyphicon-tag"></span>
+                </a>
               </div>
             </div>
           </div>
@@ -68,14 +69,6 @@
               <div class="panel-heading">
                 <h3 class="panel-title">
                   Table {{tag.data().table}}
-                  <a href="" ng-click="tableModal(tag)"
-                  data-toggle="modal" data-target="#tableModal"
-                  class="pull-right">
-                    <span class="glyphicon glyphicon-pencil"></span>
-                  </a>
-                  <a href="" ng-click="deleteTag(tag)" class="pull-right">
-                    <span class="glyphicon glyphicon-trash"></span>
-                  </a>
                 </h3>
               </div>
               <div class="panel-body">
@@ -85,6 +78,17 @@
                   <li>Major: {{tag.beacon().major()}}</li>
                   <li>Minor: {{tag.beacon().minor()}}</li>
                 </ul>
+              </div>
+              <div class="panel-footer">
+                <a href="" ng-click="deleteTag(tag)"
+                class="btn btn-default btn-lg">
+                  <span class="glyphicon glyphicon-trash"></span>
+                </a>
+                <a href="" ng-click="tableModal(tag)"
+                data-toggle="modal" data-target="#tableModal"
+                class="btn btn-default btn-lg">
+                  <span class="glyphicon glyphicon-pencil"></span>
+                </a>
               </div>
             </div>
           </div>
