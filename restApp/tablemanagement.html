@@ -37,14 +37,44 @@
             Loading...
           </div>
 
-          <div class="row" ng-show="tags">
+          <div class="row" ng-if="beacons.length > 0">
+            <h3>Beacons</h3>
+            <div class="panel panel-default" ng-repeat="beacon in beacons">
+              <div class="panel-heading">
+                <h3 class="panel-title">
+                  UUID: {{beacon.uuid}}
+                  <a href="" ng-click="newTableModal(beacon)"
+                  data-toggle="modal" data-target="#newTableModal"
+                  class="pull-right">
+                    <span class="glyphicon glyphicon-tag"></span>
+                  </a>
+                </h3>
+
+              </div>
+              <div class="panel-body">
+                <ul>
+                  <li>UUID: {{beacon.uuid}}</li>
+                  <li>Major: {{beacon.major}}</li>
+                  <li>Minor: {{beacon.minor}}</li>
+                  <li>Distance: {{beacon.distance}}</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="row" ng-show="tags.length > 0">
+            <h3>Tables</h3>
             <div class="panel panel-default" ng-repeat="tag in tags">
               <div class="panel-heading">
                 <h3 class="panel-title">
                   Table {{tag.data().table}}
                   <a href="" ng-click="tableModal(tag)"
-                  data-toggle="modal" data-target="#tableModal">
-                    <span class="glyphicon glyphicon-pencil pull-right"></span>
+                  data-toggle="modal" data-target="#tableModal"
+                  class="pull-right">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                  </a>
+                  <a href="" ng-click="deleteTag(tag)" class="pull-right">
+                    <span class="glyphicon glyphicon-trash"></span>
                   </a>
                 </h3>
               </div>
@@ -90,6 +120,37 @@
             </div><!-- /.modal-dialog -->
           </div><!-- /.modal -->
 
+          <div class="modal fade" id="newTableModal">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close"
+                  data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  <h4 class="modal-title">Add table</h4>
+                </div>
+                <div class="modal-body">
+                  <div class="input-group">
+                    <input type="number" class="form-control"
+                    placeholder="Table number" aria-describedby="basic-addon1"
+                    ng-model="data.table">
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">
+                    Close
+                  </button>
+                  <button type="button" class="btn btn-primary"
+                  data-dismiss="modal"
+                  ng-click="associateTag(beacon, data)">
+                    Save changes
+                  </button>
+                </div>
+              </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+          </div><!-- /.modal -->
+
         </div>
 
 
@@ -99,10 +160,18 @@
           app.controller('TableCtrl', ['$scope', function($scope) {
             $scope.ready = false;
             $scope.tags = [];
+            $scope.beacons = [];
             SmartPlaces.onInit(function() {
+              SmartPlaces.onBeaconsScanned(function(beacons) {
+                $scope.$apply(function() {
+                  $scope.beacons = beacons;
+                });
+              })
               $scope.init();
             });
             $scope.init = function() {
+              $scope.ready = false;
+              $scope.tags = [];
               SmartPlaces.getTags({
                 success: function(tags) {
                     $scope.$apply(function() {
@@ -115,10 +184,15 @@
                 }
               });
             };
+
             $scope.tableModal = function(tag) {
               $scope.data = angular.copy(tag.data(), $scope.data);
               $scope.tag = tag;
             };
+
+            $scope.newTableModal = function(beacon) {
+              $scope.beacon = beacon;
+            }
 
             $scope.updateTag = function(tag, data) {
               SmartPlaces.updateTag(tag, data, {
@@ -127,7 +201,28 @@
                   $scope.init();
                 }
               });
+            };
 
+            $scope.associateTag = function(beacon, data) {
+              SmartPlaces.getBeacon(beacon, {
+                success: function(beacon) {
+                  if(beacon) {
+                    SmartPlaces.associateTag(beacon, data, {
+                      success: function(tag) {
+                        $scope.init();
+                      }
+                    })
+                  }
+                }
+              });
+            };
+
+            $scope.deleteTag = function(tag) {
+              SmartPlaces.deleteTag(tag, {
+                success: function() {
+                  $scope.init();
+                }
+              })
             }
           }]);
 
