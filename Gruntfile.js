@@ -5,10 +5,12 @@ module.exports = function(grunt) {
   require('load-grunt-tasks')(grunt);
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-scp');
 
   // Project configuration.
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+    deploy: grunt.file.readJSON('deploy.json'),
     bower: {
       install: {
          options: {
@@ -46,11 +48,35 @@ module.exports = function(grunt) {
     },
     clean: {
       build: ["bower_components", "restApp/bower_components"],
+    },
+    scp: {
+      options: {
+          host: '<%= deploy.host %>',
+          username: '<%= deploy.username %>',
+          password: '<%= deploy.password %>'
+      },
+      app: {
+        files: [{
+          cwd: 'restApp',
+          src: '**/*',
+          filter: 'isFile',
+          dest: '<%= deploy.dest %>/restApp'
+        }]
+      },
+      api: {
+        files: [{
+          cwd: '.',
+          src: 'slocAPI.php',
+          filter: 'isFile',
+          dest: '<%= deploy.dest %>'
+        }]
+      }
     }
   });
-
+  
   grunt.registerTask('common', ['bower'])
   grunt.registerTask('default', ['common', 'php:dist', 'php:watch', 'watch']);
   grunt.registerTask('dist', ['common']);
+  grunt.registerTask('deploy', ['dist', 'scp']);
 
 };
