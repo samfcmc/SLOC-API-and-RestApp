@@ -29,11 +29,29 @@
             <div class="jumbotron" style="background: #FF6666">
                 <h3 id="title" align="center" style="color: whitesmoke">WELCOME TO THE IST RESTAURANT</h3>
                 <h5 id="loading">Getting your table's number...</h5>
-                <h5 id="title2" style="color: #404040">Table: <span id="tableNr"></span><span> Seat: </span><span id="seatNr"></span></h5>
                 <h5 id="map" style="color: #404040"></h5>
                 <h5 id="points" style="color: whitesmoke"></h5>
             </div>
             <br>
+
+            <div class="panel panel-default" align="center">
+              <div class="panel-body">
+                <div class="media">
+                  <div class="media-left">
+                    <a href="#">
+                      <img id="tag-icon" class="media-object" alt="Tag icon">
+                    </a>
+                  </div>
+                  <div class="media-body">
+                    <h5 id="title2" style="color: #404040"
+                    class="media-heading">
+                      Table: <span id="tableNr"></span>
+                      <span> Seat: </span><span id="seatNr"></span>
+                    </h5>
+                  </div>
+                </div
+              </div>
+            </div>
         </div>
 
         <div class="container-fluid">
@@ -218,6 +236,8 @@
               SmartPlaces.onTagFound(function(tag) {
                 table = tag.table;
                 seat = 1;
+                var icon = tag.beacon.icon;
+                document.getElementById('tag-icon').src = icon;
                 updateTableAndSeat(table, seat);
               });
             }
