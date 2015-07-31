@@ -19,7 +19,7 @@
     "tests"
   ],
   "dependencies": {
-    "smartplaces-js": "0.0.9",
+    "smartplaces-js": "0.0.10",
     "angular": "1.4.3"
   }
 }
