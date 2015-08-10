@@ -240,15 +240,9 @@
             };
 
             $scope.associateTag = function(beacon, data) {
-              SmartPlaces.getBeacon(beacon, {
-                success: function(beacon) {
-                  if(beacon) {
-                    SmartPlaces.associateTag(beacon, data, {
-                      success: function(tag) {
-                        $scope.init();
-                      }
-                    })
-                  }
+              SmartPlaces.associateTag(beacon, data, {
+                success: function(tag) {
+                  $scope.init();
                 }
               });
             };
